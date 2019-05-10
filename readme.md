@@ -1,3 +1,9 @@
+This repository is for practicing Laravel framework.
+I learn on Udemy.
+<br><b>Laravel E-Commerce Restful API tutorial</b><br>
+https://www.udemy.com/laravel-e-commerce-restful-api/<br>
+Know what is Rest concept and how to create a RESTFUL API with Laravel Resource
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
