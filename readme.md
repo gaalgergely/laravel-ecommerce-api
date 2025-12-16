@@ -1,78 +1,38 @@
-This repository is for practicing Laravel framework.
-I learn on Udemy.
-<br><b>Laravel E-Commerce Restful API tutorial</b><br>
-https://www.udemy.com/laravel-e-commerce-restful-api/<br>
-Know what is Rest concept and how to create a RESTFUL API with Laravel Resource
+# Laravel E-Commerce RESTful API
 
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+This project is a Laravel 5.8 RESTful API that powers a simple e-commerce backend. It exposes product and review resources with JSON responses shaped by Laravel Resource classes and uses Laravel Passport for authentication on protected routes.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Features
+- **Products API**: Public listing with pagination and single-product retrieval. Authenticated users can create, update, or delete products with validation on name, description, price, stock, and discount fields.
+- **Reviews API**: Nested review endpoints under each product. Supports creating, updating, listing, and deleting reviews with validated customer name, star rating (0–5), and review body.
+- **Resource transformers**: `ProductResource`, `ProductCollection`, and `ReviewResource` standardize JSON output with computed fields like discounted price, rating averages, and review links.
+- **Validation**: Form Request classes (`ProductRequest`, `ReviewRequest`) centralize rules to keep controllers lean.
+- **Authentication & authorization**: Laravel Passport guards product mutations; custom exceptions block unauthorized edits when ownership checks fail.
+- **Error handling**: Custom exception trait supplies consistent JSON responses for missing models and invalid routes.
 
-## About Laravel
+## API Workflows
+- **Products**: `GET /api/products` (paginated list), `GET /api/products/{id}`, `POST /api/products`, `PUT/PATCH /api/products/{id}`, `DELETE /api/products/{id}`.
+- **Reviews**: `GET /api/products/{product}/reviews`, `POST /api/products/{product}/reviews`, `PUT/PATCH /api/products/{product}/reviews/{id}`, `DELETE /api/products/{product}/reviews/{id}`.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Architecture Overview
+- **Routing**: `routes/api.php` defines product resources and nested review resources.
+- **Controllers**: `ProductController` handles product CRUD with auth middleware and ownership checks; `ReviewController` manages reviews scoped to a product.
+- **Models**: `Product` (has many `Review`) and `Review` (belongs to `Product`).
+- **Requests**: Form Requests enforce validation before controllers run.
+- **Resources**: API Resources shape outgoing payloads with computed totals and rating data.
+- **Exceptions**: Custom exception handling ensures consistent JSON errors for missing models and 404 routes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Getting Started
+1. Install dependencies: `composer install` and `npm install` (if you need to build front-end assets).
+2. Copy `.env.example` to `.env` and configure your database and `APP_KEY` (`php artisan key:generate`).
+3. Run migrations: `php artisan migrate`.
+4. Install Passport keys: `php artisan passport:install`.
+5. Serve the API: `php artisan serve` (default `http://localhost:8000`).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1400 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Notes and Next Steps
+- Associate the authenticated user to new products to fully enforce ownership checks.
+- Add authentication/authorization to review routes if you want to restrict who can post or edit reviews.
+- Consider adding filtering/sorting for products, pagination on reviews, and standardized error responses for validation/auth errors.
 
 ## License
-
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced under the [MIT license](https://opensource.org/licenses/MIT).
